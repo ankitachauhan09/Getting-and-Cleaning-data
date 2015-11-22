@@ -1,0 +1,60 @@
+
+> library(plyr)
+Warning message:
+package ‘plyr’ was built under R version 3.1.3 
+>
+> # Step 1: Merges the training and the test sets to create one data set.
+> 
+
+> x_train <- read.table("./X_train.txt")
+> y_train <- read.table("./y_train.txt")
+> subject_train <- read.table("./subject_train.txt")
+> 
+> #combine test datasets
+> x_test <- read.table("./X_test.txt")
+> y_test <- read.table("./y_test.txt")
+> subject_test <- read.table("./subject_test.txt")
+> 
+> #combine x, y and subject datasets
+> 
+> x_final<-rbind(x_train,x_test)
+> y_final<-rbind(x_train,y_test)
+Error in rbind(deparse.level, ...) : 
+  numbers of columns of arguments do not match
+> y_final<-rbind(y_train,y_test)
+> subject_final<-rbind(subject_train,subject_test)
+> 
+> #Step 2: Extracts only the measurements on the mean and standard deviation for each measurement. 
+> 
+> features <- read.table("features.txt")
+> #get relevant columns i.e. columns with mean() and std() in their names
+> ms_features <- grep("-(mean|std)\\(\\)", features[, 2])
+> 
+> #create relevant dataset by subsetting
+> x_final<-x_final[,ms_features]
+> 
+> #correct the column names
+> names(x_final) <- features[ms_features, 2]
+> 
+> #Step 3:Uses descriptive activity names to name the activities in the data set
+> 
+> activity <- read.table("activity_labels.txt")
+> #update values with activity labels corresponding to them
+> y_final[, 1] <- activity[y_final[, 1], 2]
+> # correct column name
+> names(y_final) <- "activity"
+> 
+> 
+> #Step 4:Appropriately labels the data set with descriptive variable names. 
+> #use correct column names
+> names(subject_final) <- "subject"
+> 
+> #combine to form one final data set
+> final_data<-cbind(x_final,y_final,subject_final)
+> 
+> 
+> #Step 5:creates a second, independent tidy data set with the average of each variable for each activity and each subject.
+> 
+> tidy_data <- ddply(final_data, .(subject, activity), function(x) colMeans(x[, 1:66]))
+> 
+> write.table(tidy_data, "tidy_data.txt", row.name=FALSE)
