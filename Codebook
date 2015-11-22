@@ -1,0 +1,19 @@
+The file run_analysis.R performs the required data processesing.
+
+1. All the datasets are combined in separate datasets x_final, y_final and subject_final.
+2. Columns with the mean and standard deviation measures are subsetted.
+3. After extraction, these column names are updated from features.txt.
+4. Activity names and IDs are taken from activity_labels.txt and updated in the dataset.
+5. A final tidy dataset with all the average measures for each subject and activity type (30 subjects * 6 activities = 180 rows).
+
+
+OUTPUT - tidy_data.txt
+
+VARIABLES:
+
+
+x_train, y_train, x_test, y_test, subject_train and subject_test are the input data files downloaded from the link given in the course project description.
+x_final, y_final and subject_final are the merged datasets for further analysis.
+features dataset has the correct names for the x_final dataset, which are applied to the columns in ms_features.
+A similar approach is taken with activity names through the activities variable.
+final_data merges x_final, y_final and subject_final in one dataset.
